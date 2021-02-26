@@ -16,10 +16,8 @@ class CreateExamenesTable extends Migration
         Schema::create('examenes', function (Blueprint $table) {
             $table->id();
             $table->string('nombre', 255);
-            $table->integer('id_profesor')->unsigned();
-            $table->integer('id_curso')->unsigned();
-            $table->foreign('id_profesor')->references('users')->on('id');
-            $table->foreign('id_curso')->references('cursos')->on('id');
+            $table->integer('id_profesor_curso')->unsigned();
+            $table->foreign('id_profesor_curso')->references('id')->on('users_cursos');
             $table->timestamps();
         });
     }
