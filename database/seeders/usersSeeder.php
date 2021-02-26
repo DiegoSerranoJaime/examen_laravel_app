@@ -28,14 +28,29 @@ class usersSeeder extends Seeder
                 'name' => 'profesor',
                 'email' => 'profesor@example.com',
                 'password' => Hash::make('profesor'),
-                'tipo' => 'profesor'
+                'tipo' => 'profesor',
             ]
         );
+
         DB::table('users')->insert(
             [
                 'name' => 'alumno',
                 'email' => 'alumno@example.com',
                 'password' => Hash::make('alumno')
+            ]
+        );
+
+        DB::table('users_cursos')->insert(
+            [
+                'id_curso' => 1,
+                'id_usuario' => 2
+            ]
+        );
+
+        DB::table('users_cursos')->insert(
+            [
+                'id_curso' => 1,
+                'id_usuario' => 3
             ]
         );
     }

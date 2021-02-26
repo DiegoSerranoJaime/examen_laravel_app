@@ -15,9 +15,9 @@ class CreateExamenesCompletadosTable extends Migration
     {
         Schema::create('examenes_alumnos', function (Blueprint $table) {
             $table->id();
-            $table->integer('id_examen')->unsigned();
+            $table->integer('id_examen_curso')->unsigned();
             $table->integer('id_alumno')->unsigned();
-            $table->foreign('id_examen')->references('id')->on('examenes');
+            $table->foreign('id_examen_curso')->references('id')->on('examenes');
             $table->foreign('id_alumno')->references('id')->on('users');
             $table->timestamps();
         });

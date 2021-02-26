@@ -22,6 +22,7 @@ Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
+Route::get('/examenes', [ExamenController::class, 'index']);
 
-Route::get('/admin/usuarios', );
-Route::get('/alumnos')->middleware('profesor');
+Route::get('/admin/usuarios', [])->middleware('admin');
+Route::get('/alumnos', [])->middleware('profesor');
