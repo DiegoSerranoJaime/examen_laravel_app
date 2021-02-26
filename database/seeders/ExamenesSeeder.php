@@ -18,6 +18,15 @@ class ExamenesSeeder extends Seeder
             'nombre' => "Unidad 8: Vertebrados",
             'id_profesor_curso' => 1
         ]);
+        DB::table('examenes')->insert([
+            'nombre' => "Unidad 7: Hervivoros",
+            'id_profesor_curso' => 1
+        ]);
+
+        DB::table('examenes_completados')->insert([
+            'id_examen' => 2,
+            'id_alumno' => 3
+        ]);
 
     }
 }

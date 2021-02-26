@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
@@ -23,6 +24,27 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+      
+
+        return view('home',['examenesNoComp' => $this->Completados()]);
+    }
+
+    private function noCompletados(){
+
+        //EXAMENES NO COMPLETADOS
+        $idUsuario = auth()->user()->id;
+        $examenesNoComp = DB::select('SELECT * FROM examenes WHERE id NOT IN (SELECT id_examen FROM examenes_completados WHERE id_alumno = ?)',[$idUsuario]);
+
+        return $examenesNoComp;
+    }
+
+    private function completados(){
+
+        //EXAMENES COMPLETADOS
+        $idUsuario = auth()->user()->id;
+        $examenesComp = DB::select('SELECT examenes.* FROM examenes INNER JOIN examenes_completados ON examenes.id = examenes_completados.id_examen 
+        WHERE examenes_completados.id_alumno = ?',[$idUsuario]);
+
+        return $examenesComp;
     }
 }

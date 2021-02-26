@@ -15,6 +15,12 @@
                     @endif
 
                     {{ __('You are logged in!') }}
+
+                    <div>
+                        @foreach ($examenesNoComp as $examen)
+                        <p>{{ $examen->nombre }}</p>
+                        @endforeach
+                    </div>
                 </div>
             </div>
         </div>
