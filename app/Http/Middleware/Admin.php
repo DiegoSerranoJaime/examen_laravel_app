@@ -16,10 +16,10 @@ class Admin
      */
     public function handle(Request $request, Closure $next)
     {
-        if(auth()->user()->admin == 1) {
+        if(auth()->user()->tipo == 'admin') {
             return $next($request);
         }
 
-        return $next($request);
+        return redirect('/home');
     }
 }

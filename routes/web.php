@@ -24,5 +24,10 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 Route::get('/examenes', [ExamenController::class, 'index']);
 
-Route::get('/admin/usuarios', [])->middleware('admin');
-Route::get('/alumnos', [])->middleware('profesor');
+Route::get('/admin/usuarios',function () {
+    echo 'hola admin';
+})->middleware('admin');
+
+Route::get('/alumnos',function () {
+    echo 'hola profesor';
+})->middleware('profesor');

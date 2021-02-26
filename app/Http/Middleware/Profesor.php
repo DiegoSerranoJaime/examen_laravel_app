@@ -16,7 +16,7 @@ class Profesor
      */
     public function handle(Request $request, Closure $next)
     {
-        if(auth()->user()->profesor == 1) {
+        if(auth()->user()->tipo == 'profesor') {
             return $next($request);
         }
 
