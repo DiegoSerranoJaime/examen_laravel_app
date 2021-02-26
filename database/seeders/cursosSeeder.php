@@ -15,13 +15,18 @@ class cursosSeeder extends Seeder
     public function run()
     {
         DB::table('cursos')->insert([
-            'nombre' => '1ESO E'
-        ], [
-            'nombre' => '1ESO F'
-        ], [
-            'nombre' => '1ESO G'
-        ], [
-            'nombre' => '1ESO H'
+            [
+                'nombre' => '1ESO E'
+            ],
+            [
+                'nombre' => '1ESO F'
+            ],
+            [
+                'nombre' => '1ESO G'
+            ],
+            [
+                'nombre' => '1ESO H'
+            ]
         ]);
     }
 }
