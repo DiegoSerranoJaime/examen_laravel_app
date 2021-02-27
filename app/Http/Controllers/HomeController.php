@@ -24,9 +24,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-      
-
-        return view('home',['examenesNoComp' => $this->Completados()]);
+        return view('home',['examenesNoComp' => $this->noCompletados(), 'examenesComp' => $this->completados()]);
     }
 
     private function noCompletados(){
@@ -42,7 +40,7 @@ class HomeController extends Controller
 
         //EXAMENES COMPLETADOS
         $idUsuario = auth()->user()->id;
-        $examenesComp = DB::select('SELECT examenes.* FROM examenes INNER JOIN examenes_completados ON examenes.id = examenes_completados.id_examen 
+        $examenesComp = DB::select('SELECT examenes.* FROM examenes INNER JOIN examenes_completados ON examenes.id = examenes_completados.id_examen
         WHERE examenes_completados.id_alumno = ?',[$idUsuario]);
 
         return $examenesComp;
