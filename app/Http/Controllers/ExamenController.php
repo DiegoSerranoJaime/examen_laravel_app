@@ -10,9 +10,9 @@ class ExamenController extends Controller
     //
 
     public function index($id) {
-        // if ($this->checkCompleteTest($id)) {
-
-        // }
+        if ($this->checkCompleteTest($id)) {
+            return redirect('/home');
+        }
 
         $preg = DB::table('preguntas')
                     ->join('examenes_preguntas', 'preguntas.id', '=', 'examenes_preguntas.id_pregunta')
@@ -59,8 +59,10 @@ class ExamenController extends Controller
                     ->first();
 
         if ($data) {
-            return redirect('/home');
+            return true;
         }
+
+        return false;
     }
 
     public function completeTest($id_examen) {
