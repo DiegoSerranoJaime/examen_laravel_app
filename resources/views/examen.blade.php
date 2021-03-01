@@ -1,17 +1,35 @@
-<?php
-    use \App\Http\Controllers\ExamenController;
-?>
-
 @extends('layouts.app')
 
 @section('content')
 <div class="container">
-   @foreach($preguntas as $pregunta)
-        <p>{{$pregunta->nombre}}</p>
+    <form method="POST" action="/examen/{{ $id_ex }}">
+        @csrf
 
-        @foreach(ExamenController::getAnswers($id_ex, $pregunta->id) as $respuesta)
-            <p>{{ $respuesta->nam }}</p>
+        @foreach($preguntas as $key => $pregunta)
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="row d-flex justify-content-between">
+                        <div class="col-9">
+                            <label class="form-check-label">{{$pregunta->nombre}}</label>
+                        </div>
+                        <div class="col-auto">
+                            <p>{{ $pregunta->puntos }} puntos</p>
+                        </div>
+                    </div>
+
+                    @foreach($pregunta->respuestas as $respuesta)
+                        <div class="form-check ml-4">
+                            <label class="form-check-label">
+                                <input type="radio" name="answer{{ $key }}" value="{{ $respuesta->id }}" class="form-check-input">
+                                {{ $respuesta->name }}
+                            </label>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
         @endforeach
-   @endforeach
+
+        <button type="submit" class="btn btn-primary">Enviar formulario</button>
+    </form>
 </div>
 @endsection

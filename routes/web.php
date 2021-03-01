@@ -24,6 +24,7 @@ Auth::routes();
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 Route::get('/examen/{id}', [ExamenController::class, 'index'])->middleware('auth');
+Route::get('/examen/completado/{id}', [ExamenController::class, 'completeTest'])->middleware('auth');
 Route::post('/examen/{id}', [ExamenController::class, 'create'])->middleware('auth');
 
 Route::get('/admin/usuarios',function () {
