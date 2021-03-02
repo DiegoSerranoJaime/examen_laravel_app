@@ -24,7 +24,13 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home',['examenesNoComp' => $this->noCompletados(), 'examenesComp' => $this->completados()]);
+        if (auth()->user()->tipo == 'alumno') {
+            return view('home',['examenesNoComp' => $this->noCompletados(), 'examenesComp' => $this->completados()]);
+        } elseif (auth()->user()->tipo == 'profesor') {
+            return redirect('/profesor');
+        } elseif (auth()->user()->tipo == 'admin') {
+            return redirect('/admin');
+        }
     }
 
     private function noCompletados(){

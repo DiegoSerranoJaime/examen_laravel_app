@@ -29,18 +29,20 @@ Route::get('/examen/{id}', [ExamenController::class, 'index'])->middleware('auth
 Route::get('/examen/completado/{id}', [ExamenController::class, 'completeTest'])->middleware('auth');
 Route::post('/examen/{id}', [ExamenController::class, 'create'])->middleware('auth');
 
-Route::get('/admin', [AdminController::class, 'index'])->middleware('admin');
 
 // Rutas de Admin
+Route::get('/admin', [AdminController::class, 'index'])->middleware('admin');
 Route::get('/admin/alumnos', [AdminController::class, 'getAlumnos'])->middleware('admin');
 Route::get('/admin/cursos', [AdminController::class, 'getCursos'])->middleware('admin');
 Route::get('/admin/profesores', [AdminController::class, 'getProfesores'])->middleware('admin');
 
 // Rutas de Profesores
-Route::get('/profesor', [ProfesorController::class, 'index'])->middleware('profesor');
-Route::get('/profesor/examenes', [ProfesorController::class, 'getExamenes'])->middleware('profesor');
+Route::get('/profesor', [ProfesorController::class, 'index'])->middleware('profesor'); //ok
+Route::get('/profesor/examenes', [ProfesorController::class, 'getExamenes'])->middleware('profesor'); //ok
 Route::get('/profesor/examen/{id}', [ProfesorController::class, 'getExamen'])->middleware('profesor');
-Route::get('/profesor/cursos', [ProfesorController::class, 'getCursos'])->middleware('profesor');
-Route::get('/profesor/curso/{id}', [ProfesorController::class, 'getCurso'])->middleware('profesor');
-Route::get('/profesor/alumno/{id}', [ProfesorController::class, 'getAlumno'])->middleware('profesor');
-Route::get('/profesor/alumno/{id}/examen/{id}', [ProfesorController::class, 'getExamenAlumno'])->middleware('profesor');
+
+Route::get('/profesor/cursos', [ProfesorController::class, 'getCursos'])->middleware('profesor'); //ok
+Route::get('/profesor/curso/{id}', [ProfesorController::class, 'getAlumnosCurso'])->middleware('profesor'); //ok
+
+Route::get('/profesor/curso/{id_curso}/alumno/{id_alumno}', [ProfesorController::class, 'getAlumno'])->middleware('profesor')->name('alumno');
+Route::get('/profesor/curso/{id_curso}/alumno/{id_alumno}/examen/{id_examen}', [ProfesorController::class, 'getExamenAlumno'])->middleware('profesor')->name('alumno.examen'); //ok
