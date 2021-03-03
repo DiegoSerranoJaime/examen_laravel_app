@@ -40,6 +40,18 @@
                         </div>
 
                         <div class="form-group row">
+                            <label for="curso" class="col-md-4 col-form-label text-md-right">{{ __('Curso') }}</label>
+
+                            <div class="col-md-6">
+                                <select name="curso" id="curso" class="form-control">
+                                    @foreach ($cursos as $curso)
+                                        <option value="{{ $curso->id }}"> {{ $curso->nombre }} </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
                             <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
 
                             <div class="col-md-6">

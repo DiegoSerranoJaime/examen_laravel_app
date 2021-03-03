@@ -122,37 +122,44 @@ class PreguntasSeeder extends Seeder
 
         DB::table('examenes_preguntas')->insert([
             'id_examen' => 1,
-            'id_pregunta' => 7
+            'id_pregunta' => 7,
+            'puntos' => 3
         ]);
 
         DB::table('examenes_preguntas')->insert([
             'id_examen' => 1,
-            'id_pregunta' => 8
+            'id_pregunta' => 8,
+            'puntos' => 3
         ]);
 
         DB::table('examenes_preguntas')->insert([
             'id_examen' => 1,
-            'id_pregunta' => 9
+            'id_pregunta' => 9,
+            'puntos' => 3
         ]);
 
         DB::table('examenes_preguntas')->insert([
             'id_examen' => 1,
-            'id_pregunta' => 10
+            'id_pregunta' => 10,
+            'puntos' => 3
         ]);
 
         DB::table('examenes_preguntas')->insert([
             'id_examen' => 1,
-            'id_pregunta' => 11
+            'id_pregunta' => 11,
+            'puntos' => 3
         ]);
 
         DB::table('examenes_preguntas')->insert([
             'id_examen' => 1,
-            'id_pregunta' => 12
+            'id_pregunta' => 12,
+            'puntos' => 3
         ]);
 
         DB::table('examenes_preguntas')->insert([
             'id_examen' => 1,
-            'id_pregunta' => 13
+            'id_pregunta' => 13,
+            'puntos' => 3
         ]);
     }
 }

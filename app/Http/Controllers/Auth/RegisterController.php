@@ -53,9 +53,18 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed']
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'curso' => ['required']
         ]);
     }
+
+    public function getCursos(){
+
+        $cursos = DB::select("SELECT * FROM cursos");
+
+        return view('auth/register', ['cursos' => $cursos]);
+    }
+
 
     /**
      * Create a new user instance after a valid registration.
@@ -65,10 +74,14 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $usuario = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
-            'password' => Hash::make($data['password']),
+            'password' => Hash::make($data['password'])
         ]);
+
+        DB::insert("INSERT INTO users_cursos (id_curso, id_usuario) VALUES (?, ?)", [$data['curso'],$usuario->id]);
+
+        return $usuario;
     }
 }

@@ -24,26 +24,35 @@ class HomeController extends Controller
      */
     public function index()
     {
+
         if (auth()->user()->tipo == 'alumno') {
             return view('home',['examenesNoComp' => $this->noCompletados(), 'examenesComp' => $this->completados()]);
         } elseif (auth()->user()->tipo == 'profesor') {
             return redirect('/profesor');
-        } elseif (auth()->user()->tipo == 'admin') {
-            return redirect('/admin');
         }
     }
 
     private function noCompletados(){
 
         //EXAMENES NO COMPLETADOS
+        $curso = $this->curso();
         $idUsuario = auth()->user()->id;
-        $examenesNoComp = DB::select('SELECT * FROM examenes WHERE id NOT IN (SELECT id_examen FROM examenes_completados WHERE id_alumno = ?)',[$idUsuario]);
+        $examenesNoComp = DB::select('SELECT * FROM examenes WHERE id NOT IN (SELECT id_examen FROM examenes_completados WHERE id_alumno = ?)
+        AND id_profesor_curso IN (SELECT id FROM users_cursos WHERE id_curso = ?)', [$idUsuario, $curso->id_curso]);
 
         return $examenesNoComp;
     }
 
-    private function completados(){
+    private function curso() {
+        $curso = DB::table('users_cursos')
+        ->select('users_cursos.id_curso')
+        ->where('id_usuario', auth()->user()->id)
+        ->first();
 
+        return $curso;
+    }
+
+    private function completados(){
         //EXAMENES COMPLETADOS
         $idUsuario = auth()->user()->id;
         $examenesComp = DB::select('SELECT examenes.* FROM examenes INNER JOIN examenes_completados ON examenes.id = examenes_completados.id_examen

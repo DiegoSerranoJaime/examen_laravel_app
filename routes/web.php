@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ExamenController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProfesorController;
+use App\Http\Controllers\Auth\RegisterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,7 +22,11 @@ Route::get('/', function () {
     return redirect('/home');
 });
 
+
 Auth::routes();
+
+// Ruta del Registro
+Route::get('/register', [RegisterController::class, 'getCursos'])->name('register');
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
