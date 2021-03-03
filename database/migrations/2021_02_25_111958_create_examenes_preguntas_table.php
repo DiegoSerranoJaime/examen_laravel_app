@@ -17,8 +17,10 @@ class CreateExamenesPreguntasTable extends Migration
             $table->id();
             $table->integer('id_examen')->unsigned();
             $table->integer('id_pregunta')->unsigned();
-            $table->decimal('puntos', 5, 2);
-
+            $table->decimal('puntos', 5, 2)->nullable();
+            $table->integer('id_preg_padre')->unsigned()->nullable();
+            $table->boolean('subordinada')->default(0);
+            $table->foreign('id_preg_padre')->references('id')->on('examenes_preguntas');
             $table->timestamps();
         });
     }

@@ -29,13 +29,6 @@ Route::get('/examen/{id}', [ExamenController::class, 'index'])->middleware('auth
 Route::get('/examen/completado/{id}', [ExamenController::class, 'completeTest'])->middleware('auth');
 Route::post('/examen/{id}', [ExamenController::class, 'create'])->middleware('auth');
 
-
-// Rutas de Admin
-Route::get('/admin', [AdminController::class, 'index'])->middleware('admin');
-Route::get('/admin/alumnos', [AdminController::class, 'getAlumnos'])->middleware('admin');
-Route::get('/admin/cursos', [AdminController::class, 'getCursos'])->middleware('admin');
-Route::get('/admin/profesores', [AdminController::class, 'getProfesores'])->middleware('admin');
-
 // Rutas de Profesores
 Route::get('/profesor', [ProfesorController::class, 'index'])->middleware('profesor'); //ok
 Route::get('/profesor/examenes', [ProfesorController::class, 'getExamenes'])->middleware('profesor'); //ok

@@ -19,17 +19,5 @@ class ExamenesSeeder extends Seeder
             'asignatura' => "Biologia",
             'id_profesor_curso' => 2
         ]);
-
-        DB::table('examenes')->insert([
-            'nombre' => "Unidad 7: Hervivoros",
-            'asignatura' => "Biologia",
-            'id_profesor_curso' => 2
-        ]);
-
-        DB::table('examenes_completados')->insert([
-            'id_examen' => 2,
-            'id_alumno' => 3
-        ]);
-
     }
 }

@@ -17,7 +17,7 @@ class CreateRespuestasExamenesTable extends Migration
             $table->id();
             $table->integer('id_ep')->unsigned();
             $table->integer('id_respuesta')->unsigned();
-            $table->boolean('correcta');
+            $table->boolean('correcta')->default(0);
             $table->foreign('id_ep')->references('id')->on('examenes_preguntas');
             $table->foreign('id_respuesta')->references('id')->on('respuestas');
             $table->timestamps();
