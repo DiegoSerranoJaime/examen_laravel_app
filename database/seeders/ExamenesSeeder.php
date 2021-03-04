@@ -17,7 +17,13 @@ class ExamenesSeeder extends Seeder
         DB::table('examenes')->insert([
             'nombre' => "Unidad 8: Vertebrados",
             'asignatura' => "Biologia",
-            'id_profesor_curso' => 2
+            'id_profesor_curso' => 1
+        ]);
+
+        DB::table('examenes')->insert([
+            'nombre' => "Unidad 9: Vertebrados",
+            'asignatura' => "Biologia",
+            'id_profesor_curso' => 1
         ]);
     }
 }

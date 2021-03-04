@@ -24,7 +24,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-
         if (auth()->user()->tipo == 'alumno') {
             return view('home',['examenesNoComp' => $this->noCompletados(), 'examenesComp' => $this->completados()]);
         } elseif (auth()->user()->tipo == 'profesor') {
@@ -33,7 +32,6 @@ class HomeController extends Controller
     }
 
     private function noCompletados(){
-
         //EXAMENES NO COMPLETADOS
         $curso = $this->curso();
         $idUsuario = auth()->user()->id;

@@ -455,5 +455,105 @@ class RespuestasSeeder extends Seeder
             'id_ep' => 13,
             'id_respuesta' => 33
         ]);
+
+        // Pruebas para examen secundario
+        DB::table('respuestas')->insert([
+            'nombre' => 'FISH'
+        ]);
+
+        DB::table('respuestas')->insert([
+            'nombre' => 'AMPHIBIANS'
+        ]);
+
+        DB::table('respuestas')->insert([
+            'nombre' => 'REPTILES'
+        ]);
+
+        DB::table('respuestas')->insert([
+            'nombre' => 'BIRDS'
+        ]);
+
+        DB::table('respuestas')->insert([
+            'nombre' => 'MAMMALS'
+        ]);
+
+        DB::table('respuestas_examenes')->insert([
+            'id_ep' => 14,
+            'id_respuesta' => 1
+        ]);
+
+        DB::table('respuestas_examenes')->insert([
+            'id_ep' => 14,
+            'id_respuesta' => 2
+        ]);
+
+        DB::table('respuestas_examenes')->insert([
+            'id_ep' => 14,
+            'id_respuesta' => 3
+        ]);
+
+        DB::table('respuestas_examenes')->insert([
+            'id_ep' => 14,
+            'id_respuesta' => 4
+        ]);
+
+        DB::table('respuestas_examenes')->insert([
+            'id_ep' => 14,
+            'id_respuesta' => 5
+        ]);
+
+        DB::table('respuestas_examenes')->insert([
+            'id_ep' => 15,
+            'id_respuesta' => 1
+        ]);
+
+        DB::table('respuestas_examenes')->insert([
+            'id_ep' => 15,
+            'id_respuesta' => 2,
+            'correcta' => 1
+        ]);
+
+        DB::table('respuestas_examenes')->insert([
+            'id_ep' => 15,
+            'id_respuesta' => 3
+        ]);
+
+        DB::table('respuestas_examenes')->insert([
+            'id_ep' => 15,
+            'id_respuesta' => 4
+        ]);
+
+        DB::table('respuestas_examenes')->insert([
+            'id_ep' => 15,
+            'id_respuesta' => 5
+        ]);
+        DB::table('respuestas_examenes')->insert([
+            'id_ep' => 16,
+            'id_respuesta' => 1
+        ]);
+
+        DB::table('respuestas_examenes')->insert([
+            'id_ep' => 16,
+            'id_respuesta' => 2
+        ]);
+
+        DB::table('respuestas_examenes')->insert([
+            'id_ep' => 16,
+            'id_respuesta' => 3,
+            'correcta' => 1
+
+        ]);
+
+        DB::table('respuestas_examenes')->insert([
+            'id_ep' => 16,
+            'id_respuesta' => 4
+        ]);
+
+        DB::table('respuestas_examenes')->insert([
+            'id_ep' => 16,
+            'id_respuesta' => 5
+        ]);
+
+
     }
 }

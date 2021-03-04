@@ -161,5 +161,31 @@ class PreguntasSeeder extends Seeder
             'id_pregunta' => 13,
             'puntos' => 3
         ]);
+
+
+
+        //
+        DB::table('examenes_preguntas')->insert([
+            'id_examen' => 2,
+            'id_pregunta' => 1,
+            'subordinada' => 1
+        ]);
+
+        DB::table('examenes_preguntas')->insert([
+            'id_examen' => 2,
+            'id_pregunta' => 2,
+            'subordinada' => 0,
+            'puntos' => 2,
+            'id_preg_padre' => 14
+        ]);
+
+        DB::table('examenes_preguntas')->insert([
+            'id_examen' => 2,
+            'id_pregunta' => 3,
+            'subordinada' => 0,
+            'puntos' => 2,
+            'id_preg_padre' => 14
+        ]);
+
     }
 }

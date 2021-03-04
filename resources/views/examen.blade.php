@@ -2,6 +2,22 @@
 
 @section('content')
 <div class="container">
+    <a href="/home" class="btn btn-primary mb-4">Volver</a>
+
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="row px-3">
+                    <h4>
+                        {{$examen->nombre}}
+                    </h4>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        {{$examen->asignatura}}
+                    </div>
+                </div>
+            </div>
+        </div>
     <form method="POST" action="/examen/{{ $id_ex }}">
         @csrf
 
@@ -9,6 +25,7 @@
             <div class="card mb-4">
                 <div class="card-body">
                     @if($pregunta->subordinada == 1)
+                    <h6>{{$pregunta->nombre}}</h6>
                     <table class="table">
                         <thead>
                             <tr>
@@ -32,14 +49,14 @@
                         </tbody>
                     </table>
                     @else
-                    <div class="row d-flex justify-content-between">
-                        <div class="col-9">
-                            <label class="form-check-label">{{$pregunta->nombre}}</label>
+                        <div class="row d-flex justify-content-between">
+                            <div class="col-9">
+                                <label class="form-check-label">{{$pregunta->nombre}}</label>
+                            </div>
+                            <div class="col-auto">
+                                <p>{{ $pregunta->puntos }} puntos</p>
+                            </div>
                         </div>
-                        <div class="col-auto">
-                            <p>{{ $pregunta->puntos }} puntos</p>
-                        </div>
-                    </div>
 
                     @foreach($pregunta->respuestas as $respuesta)
                         <div class="form-check ml-4">

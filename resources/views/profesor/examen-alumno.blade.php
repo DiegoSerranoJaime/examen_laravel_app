@@ -34,35 +34,72 @@
         @foreach($preguntas as $key => $pregunta)
             <div class="card mb-4">
                 <div class="card-body">
+                    @if($pregunta->subordinada == 1)
+                    <h6>{{$pregunta->nombre}}</h6>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col"></th>
+                                @foreach($pregunta->respuestas as $nombre_respuestas)
+                                    <th scope="col">{{ $nombre_respuestas->name }}</th>
+                                @endforeach
+                                <th scope="col">Puntos</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($pregunta->preguntas_sub as $key2 => $pregunta_sub)
+                            <tr>
+                                <th scope="row">{{ $pregunta_sub->nombre }}</th>
+                                @foreach($pregunta_sub->respuestas as $respuesta)
+
+                                    @if($respuesta->correcta == 1)
+                                        <td class="text-center bg-success">
+                                    @elseif($pregunta_sub->respuesta_seleccionada == $respuesta->id)
+                                        <td class="text-center bg-danger">
+                                    @else
+                                        <td class="text-center">
+                                    @endif
+                                        @if($pregunta_sub->respuesta_seleccionada == $respuesta->id)
+                                            <input disabled="disabled" type="radio" class="form-check-input" checked>
+                                        @else
+                                            <input disabled="disabled" type="radio" class="form-check-input">
+                                        @endif
+                                    </td>
+                                @endforeach
+                                <td>{{ $pregunta_sub->puntos }}</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                    @else
                     <div class="row d-flex justify-content-between">
                         <div class="col-9">
-                            <h5>{{$pregunta->nombre}}</h5>
+                            <label class="form-check-label">{{$pregunta->nombre}}</label>
                         </div>
                         <div class="col-auto">
                             <p>{{ $pregunta->puntos }} puntos</p>
                         </div>
                     </div>
 
-                    <p class="ml-2">Respuesta/s correcta/s</p>
-                    @foreach($pregunta->respuesta_correcta as $respuesta)
-                        <div class="alert alert-success ml-4" role="alert">
-                            {{ $respuesta->nombre }}
+                    @foreach($pregunta->respuestas as $respuesta)
+                        <div class="form-check ml-4">
+                            @if($respuesta->correcta == 1)
+                                <label class="form-check-label bg-success">
+                            @elseif($pregunta->respuesta_seleccionada == $respuesta->id)
+                                <label class="form-check-label bg-danger">
+                            @else
+                                <label class="form-check-label">
+                            @endif
+                                @if($pregunta->respuesta_seleccionada == $respuesta->id)
+                                    <input type="radio" disabled class="form-check-input" checked>
+                                @else
+                                    <input type="radio" disabled class="form-check-input">
+                                @endif
+                                {{ $respuesta->name }}
+                            </label>
                         </div>
                     @endforeach
-
-                    <p class="ml-2">Respuesta/s Seleccionada/s</p>
-                    @foreach($pregunta->respuesta_seleccionada as $respuesta)
-                        @if($respuesta->correcta == 1)
-                            <div class="alert alert-success ml-4" role="alert">
-                        @elseif($respuesta->correcta == null)
-                            <div class="alert alert-warning ml-4" role="alert">
-                        @else
-                            <div class="alert alert-danger ml-4" role="alert">
-                        @endif
-                                {{ $respuesta->nombre }}
-                            </div>
-                    @endforeach
-
+                    @endif
                 </div>
             </div>
         @endforeach

@@ -28,28 +28,21 @@ class ProfesorController extends Controller
     // Método para obtener el examen
     public function getExamen($id) {
         $preg = DB::table('preguntas')
-                    ->join('examenes_preguntas', 'preguntas.id', '=', 'examenes_preguntas.id_pregunta')
-                    ->select('preguntas.*', 'examenes_preguntas.puntos', 'examenes_preguntas.id AS id_a')
-                    ->where('examenes_preguntas.id_examen', $id)
-                    ->get();
+        ->join('examenes_preguntas', 'preguntas.id', '=', 'examenes_preguntas.id_pregunta')
+        ->select('preguntas.*', 'examenes_preguntas.puntos', 'examenes_preguntas.id AS id_a', 'examenes_preguntas.subordinada')
+        ->where('examenes_preguntas.id_examen', $id)
+        ->where('examenes_preguntas.id_preg_padre', null)
+        ->get();
 
         foreach ($preg->all() as $pregunta) {
-            $pregunta->respuestas = $this->getAnswers($id, $pregunta->id_a);
+            $pregunta->respuestas = $this->getAnswers($pregunta->id_a);
+
+            if ($pregunta->subordinada == 1) {
+                $pregunta->preguntas_sub = $this->getPreguntasSubordinadas($pregunta->id_a, 0);
+            }
         }
 
         return view('profesor.examen-profesor', ['preguntas' => $preg, 'examen' => $this->examen($id)]);
-    }
-
-    private function getAnswers($id_examen, $id_pregunta) {
-        $datos = DB::table('respuestas')
-                    ->join('respuestas_examenes', 'respuestas.id', '=', 'respuestas_examenes.id_respuesta')
-                    ->join('examenes_preguntas', 'respuestas_examenes.id_ep', '=', 'examenes_preguntas.id')
-                    ->select('respuestas.nombre as name', 'respuestas_examenes.id', 'respuestas_examenes.correcta')
-                    ->where('examenes_preguntas.id_examen', $id_examen)
-                    ->where('examenes_preguntas.id_pregunta', $id_pregunta)
-                    ->get();
-
-        return $datos;
     }
 
 
@@ -100,53 +93,77 @@ class ProfesorController extends Controller
     public function getExamenAlumno($id_curso, $id_alumno, $id_examen) {
         $preg = DB::table('preguntas')
                     ->join('examenes_preguntas', 'preguntas.id', '=', 'examenes_preguntas.id_pregunta')
-                    ->select('preguntas.*', 'examenes_preguntas.puntos', 'examenes_preguntas.id as id_a')
+                    ->select('preguntas.*', 'examenes_preguntas.puntos', 'examenes_preguntas.id AS id_a', 'examenes_preguntas.subordinada')
                     ->where('examenes_preguntas.id_examen', $id_examen)
+                    ->where('examenes_preguntas.id_preg_padre', null)
                     ->get();
 
         foreach ($preg->all() as $pregunta) {
-            $pregunta->respuesta_correcta = $this->getCorrectAnswers($pregunta->id_a);
+            $pregunta->respuestas = $this->getAnswers($pregunta->id_a);
             $pregunta->respuesta_seleccionada = $this->getSetAnswers($pregunta->id_a, $id_alumno);
+
+            if ($pregunta->subordinada == 1) {
+                $pregunta->preguntas_sub = $this->getPreguntasSubordinadas($pregunta->id_a, $id_alumno);
+            }
         }
 
         return view('profesor.examen-alumno', [
             'preguntas' => $preg,
-            'nota' => $this->calcNota($id_examen, $id_alumno),
+            'nota' => number_format($this->calcNota($id_examen, $id_alumno), 2),
             'examen' => $this->examen($id_examen),
             'curso' => $id_curso,
             'alumno' => $id_alumno
         ]);
     }
 
+    // Función para obtener las preguntas subordinadas (Preguntas dentro de otras)
+    private function getPreguntasSubordinadas($id_pregunta, $id_alumno) {
+        $preg = DB::table('preguntas')
+                    ->join('examenes_preguntas', 'preguntas.id', '=', 'examenes_preguntas.id_pregunta')
+                    ->select('preguntas.*', 'examenes_preguntas.puntos', 'examenes_preguntas.id AS id_a', 'examenes_preguntas.subordinada')
+                    ->where('examenes_preguntas.id_preg_padre', $id_pregunta)
+                    ->get();
 
-    private function getCorrectAnswers($id_ep) {
+        foreach ($preg->all() as $pregunta) {
+            $pregunta->respuestas = $this->getAnswers($pregunta->id_a);
+
+            if (!empty($id_alumno)) {
+                $pregunta->respuesta_seleccionada = $this->getSetAnswers($pregunta->id_a, $id_alumno);
+            }
+        }
+
+        return $preg;
+    }
+
+    // Función que devuelve todas las respuestas
+    private function getAnswers($id_ep) {
         $res = DB::table('respuestas')
                     ->join('respuestas_examenes','respuestas.id','=','respuestas_examenes.id_respuesta')
-                    ->select('respuestas.nombre')
-                    ->where('respuestas_examenes.correcta', 1)
+                    ->select('respuestas_examenes.id', 'respuestas.nombre as name', 'respuestas_examenes.correcta')
                     ->where('respuestas_examenes.id_ep', $id_ep)
                     ->get();
 
         return $res;
     }
 
+    // Función que devuelve las respuestas que ha dado un alumno en el examen
     private function getSetAnswers($id_ep, $id_alumno) {
         $res = DB::table('respuestas')
             ->join('respuestas_examenes','respuestas.id','=','respuestas_examenes.id_respuesta')
             ->join('resultados_alumnos', 'respuestas_examenes.id', '=', 'resultados_alumnos.id_res_ex')
-            ->select('respuestas.nombre', 'respuestas_examenes.correcta')
+            ->select('resultados_alumnos.id_res_ex AS id')
             ->where('respuestas_examenes.id_ep', $id_ep)
             ->where('resultados_alumnos.id_usuario', $id_alumno)
-            ->get();
+            ->first();
 
-        $res = count($res) == 0 ? [(object)['nombre' => 'No se ha seleccionado respuesta', 'correcta' => null]] : $res ;
-
-        return $res;
+        return $res != null ? $res->id : null;
     }
 
+    // Función que calcula la nota del examen
     private function calcNota($id_examen, $id_alumno) {
         $total = DB::table('examenes_preguntas')
                     ->join('respuestas_examenes', 'examenes_preguntas.id', '=', 'respuestas_examenes.id_ep')
+                    ->where('examenes_preguntas.id_examen', $id_examen)
                     ->where('respuestas_examenes.correcta', 1)
                     ->sum('examenes_preguntas.puntos');
 
@@ -154,6 +171,7 @@ class ProfesorController extends Controller
                     ->join('respuestas_examenes', 'examenes_preguntas.id', '=', 'respuestas_examenes.id_ep')
                     ->join('resultados_alumnos', 'resultados_alumnos.id_res_ex', '=', 'respuestas_examenes.id')
                     ->where('resultados_alumnos.id_usuario', $id_alumno)
+                    ->where('examenes_preguntas.id_examen', $id_examen)
                     ->where('respuestas_examenes.correcta', 1)
                     ->sum('examenes_preguntas.puntos');
 
@@ -162,6 +180,7 @@ class ProfesorController extends Controller
         return $calculo;
     }
 
+    // Función que devuelve información del examen
     private function examen($id_examen) {
         $examen = DB::table('examenes')
                     ->select('examenes.nombre', 'examenes.asignatura')
